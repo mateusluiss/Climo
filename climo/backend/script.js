@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const API_KEY = process.env.API_KEY;
-let pais = "EUA";
+let pais = "Brazil";
 
 app.use(cors());
 
@@ -14,8 +14,9 @@ app.get("/api/clima", async (req, res) => {
     );
 
     const forecast = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${pais}&days=7&lang=pt`
+      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${pais}&days=3&lang=pt`
     );
+
     const data = await response.json();
     const fdata = await forecast.json();
 

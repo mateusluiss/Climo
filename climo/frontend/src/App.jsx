@@ -17,7 +17,7 @@ function App() {
           ></input>
         </div>
       </header>
-      <main className="grid grid-cols-[2fr_13rem] gap-10 px-13 mt-5">
+      <main className="grid grid-cols-[2fr_17rem] gap-10 px-13 mt-5">
         <Clima></Clima>
         <Previsao></Previsao>
       </main>
