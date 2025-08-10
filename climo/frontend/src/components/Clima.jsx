@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import ClimaIcon from "./ClimaIcon";
+import PrevisaoHoje from "./PrevisaoHoje";
 
 function Clima() {
   const [clima, setClima] = useState(null);
@@ -20,16 +21,19 @@ function Clima() {
     );
 
   return (
-    <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
-      <div className="flex justify-between">
-        <div>
-          <h1 className="text-white text-3xl font-bold">{clima.cidade}</h1>
-          <p className="col-start-1 text-gray-400 text-sm">{`${clima.regiao}, ${clima.pais}`}</p>
+    <div>
+      <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
+        <div className="flex justify-between">
+          <div>
+            <h1 className="text-white text-3xl font-bold">{clima.cidade}</h1>
+            <p className="col-start-1 text-gray-400 text-sm">{`${clima.regiao}, ${clima.pais}`}</p>
+          </div>
+          <ClimaIcon clima={clima.clima} size={80}></ClimaIcon>
         </div>
-        <ClimaIcon clima={clima.clima} size={80}></ClimaIcon>
+        <h2 className="text-6xl text-white font-light">{clima.temperatura}°</h2>
+        <p className="mt-2 text-gray-400 text-sm">{clima.clima}</p>
       </div>
-      <h2 className="text-6xl text-white font-light">{clima.temperatura}°</h2>
-      <p className="mt-2 text-gray-400 text-sm">{clima.clima}</p>
+      <PrevisaoHoje></PrevisaoHoje>
     </div>
   );
 }
