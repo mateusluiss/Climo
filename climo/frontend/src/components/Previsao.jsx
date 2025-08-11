@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import ClimaIcon from "./ClimaIcon";
 import Clima from "./Clima";
 
-function Previsao() {
-  const [clima, setClima] = useState(null);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/api/clima")
-      .then((res) => res.json())
-      .then((data) => setClima(data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  if (!clima)
+function Previsao({ data }) {
+  if (!data)
     return (
       <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
         <p className="text-white">Carregando...</p>
@@ -31,12 +22,12 @@ function Previsao() {
       <div>
         <div className="flex w-full justify-between place-items-center">
           <p className="text-white">Hoje</p>
-          <ClimaIcon clima={clima.clima} size={20}></ClimaIcon>
+          <ClimaIcon clima={data.clima} size={20}></ClimaIcon>
           <p className="text-xs text-gray-500">
-            {clima.clima.trim().split(/\s+/).slice(-2).join(" ")}
+            {data.clima.trim().split(/\s+/).slice(-2).join(" ")}
           </p>
         </div>
-        {clima.previsao.map((dia) => (
+        {data.previsao.map((dia) => (
           <div key={dia.date} className="flex place-items-center mt-3">
             <div className="flex w-full justify-between place-items-center">
               <p className="text-gray-500 text">

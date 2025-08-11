@@ -1,39 +1,30 @@
-import { useEffect, useState } from "react";
 import React from "react";
 import ClimaIcon from "./ClimaIcon";
 import PrevisaoHoje from "./PrevisaoHoje";
 
-function Clima() {
-  const [clima, setClima] = useState(null);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/api/clima")
-      .then((res) => res.json())
-      .then((data) => setClima(data))
-      .catch((err) => console.error(err));
-  }, []);
-
-  if (!clima)
+function Clima({ data }) {
+  if (!data) {
     return (
       <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
         <p className="text-white">Carregando...</p>
       </div>
     );
+  }
 
   return (
     <div>
       <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
         <div className="flex justify-between">
           <div>
-            <h1 className="text-white text-3xl font-bold">{clima.cidade}</h1>
-            <p className="col-start-1 text-gray-400 text-sm">{`${clima.regiao}, ${clima.pais}`}</p>
+            <h1 className="text-white text-3xl font-bold">{data.cidade}</h1>
+            <p className="col-start-1 text-gray-400 text-sm">{`${data.regiao}, ${data.pais}`}</p>
           </div>
-          <ClimaIcon clima={clima.clima} size={80}></ClimaIcon>
+          <ClimaIcon clima={data.clima} size={80}></ClimaIcon>
         </div>
-        <h2 className="text-6xl text-white font-light">{clima.temperatura}°</h2>
-        <p className="mt-2 text-gray-400 text-sm">{clima.clima}</p>
+        <h2 className="text-6xl text-white font-light">{data.temperatura}°</h2>
+        <p className="mt-2 text-gray-400 text-sm">{data.clima}</p>
       </div>
-      <PrevisaoHoje></PrevisaoHoje>
+      <PrevisaoHoje data={data}></PrevisaoHoje>
     </div>
   );
 }

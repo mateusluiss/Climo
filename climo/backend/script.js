@@ -3,22 +3,25 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const API_KEY = process.env.API_KEY;
-let pais = "Francisco Morato";
 
 app.use(cors());
 
 app.get("/api/clima", async (req, res) => {
   try {
+    const paisQuery = req.query.pais || "Brasil"; // usa o query param ou o default
+    const paisTratado = encodeURIComponent(paisQuery);
+    var pais = req.query.pais;
+
     const response = await fetch(
-      `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${pais}&lang=pt`
+      `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${paisTratado}&lang=pt`
     );
 
     const forecast = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${pais}&days=3&lang=pt`
+      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${paisTratado}&days=3&lang=pt`
     );
 
     const hforecast = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${pais}&days=1&lang=pt`
+      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${paisTratado}&days=1&lang=pt`
     );
 
     const data = await response.json();
@@ -50,6 +53,8 @@ app.get("/api/clima", async (req, res) => {
       previsao: fdata.forecast.forecastday,
       previsao_hoje: previsaoFiltrada,
     });
+
+    // ...
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar o clima" });
   }
