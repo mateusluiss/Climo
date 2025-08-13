@@ -22,7 +22,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/clima?pais=${encodeURIComponent(
+        `${import.meta.env.VITE_API_URL}/api/clima?pais=${encodeURIComponent(
           searchTerm
         )}`,
         {
