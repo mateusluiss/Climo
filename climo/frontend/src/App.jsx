@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Clima from "./components/Clima";
 import Previsao from "./components/Previsao";
 import PrevisaoHoje from "./components/PrevisaoHoje";
-import logo from "./assets/logo.svg";
 import data from "./paises.json";
 
 function App() {
@@ -40,12 +39,48 @@ function App() {
     }
   };
 
+  const fetchByCoods = async (lat, lon) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/clima?lat=${lat}&long=${lon}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar clima por coordenadas");
+      }
+
+      const data = await response.json();
+      setClimaData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchByCoods(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.warn(
+            "Erro ao obter localização, usando padrão (Brasil)",
+            error
+          );
+          onSearch("Brasil");
+        }
+      );
+    } else {
+      console.warn("Erro ao obter localização, usando padrão (Brasil)");
+      onSearch("Brasil");
+    }
+  }, []);
+
   return (
     <div className="bg-fundo min-h-screen">
       <header className=" text-white flex flex-col border-b-1 border-gray-700 gap-5 p-5 place-items-center justify-between px-10 md:flex-row md:gap-0">
         <div className="flex place-items-center gap-3">
-          <img src={logo} className="bg-azul w-10 p-1 rounded-xl"></img>
-          <h1 className="text-2xl font-bold">Climo</h1>
+          <h1 className="text-2xl font-bold">climoo</h1>
         </div>
         <div>
           <div className="bg-cinza p-2 rounded-xl flex place-items-center gap-4">
@@ -64,7 +99,19 @@ function App() {
               }}
             ></input>
           </div>
-          <div id="dropdown" className="absolute bg-fundo rounded-2xl w-fit">
+          <div
+            id="dropdown"
+            className={`absolute bg-fundo rounded-2xl w-fit md:w-[10rem] transition-all duration-200 ease-in ${
+              value &&
+              data.some(
+                (item) =>
+                  item.nome.toLowerCase().startsWith(value.toLowerCase()) &&
+                  item.nome.toLowerCase() !== value.toLowerCase()
+              )
+                ? "translate-y-0 opacity-100"
+                : "opacity-0 -translate-y-2 pointer-events-none"
+            }`}
+          >
             {data
               .filter((item) => {
                 const searchTerm = value.toLowerCase();
