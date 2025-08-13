@@ -68,10 +68,10 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-fundo min-h-screen">
+    <div className="bg-gradient-to-b from-fundo via-fundo to-gray-800 min-h-screen">
       <header className=" text-white flex flex-col border-b-1 border-gray-700 gap-5 p-5 place-items-center justify-between px-10 md:flex-row md:gap-0">
         <div className="flex place-items-center gap-3">
-          <h1 className="text-2xl font-bold">climoo</h1>
+          <h1 className="text-2xl font-bold">Climo</h1>
         </div>
         <div>
           <div className="bg-cinza p-2 rounded-xl flex place-items-center gap-4">
