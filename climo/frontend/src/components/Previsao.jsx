@@ -28,7 +28,10 @@ function Previsao({ data }) {
           </p>
         </div>
         {data.previsao.map((dia) => (
-          <div key={dia.date} className="flex place-items-center mt-3">
+          <div
+            key={new Date(dia.date)}
+            className="flex place-items-center mt-3"
+          >
             <div className="flex w-full justify-between place-items-center">
               <p className="text-gray-500 text">
                 {capitalize(

@@ -8,13 +8,16 @@ import data from "./paises.json";
 function App() {
   const [value, setValue] = useState("");
   const [climaData, setClimaData] = useState(null);
+  const [cidade, setCidade] = useState("Carregando...");
 
   const onChange = (event) => {
     setValue(event.target.value);
   };
 
-  const onSearch = async (searchTerm) => {
-    setValue(searchTerm);
+  const onSearch = async (searchTerm, atualizarInput) => {
+    if (atualizarInput) {
+      setValue(searchTerm);
+    }
     //api to fetch search results
 
     try {
@@ -39,40 +42,28 @@ function App() {
     }
   };
 
-  const fetchByCoods = async (lat, lon) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/clima?lat=${lat}&long=${lon}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Erro ao buscar clima por coordenadas");
-      }
-
-      const data = await response.json();
-      setClimaData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          fetchByCoods(position.coords.latitude, position.coords.longitude);
+          const { latitude, longitude } = position.coords;
+          const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+          fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+              const cidadeDetectada =
+                data.address.city || data.address.town || data.address.village;
+              setCidade(cidadeDetectada);
+
+              onSearch(cidadeDetectada, false);
+            });
         },
-        (error) => {
-          console.warn(
-            "Erro ao obter localização, usando padrão (Brasil)",
-            error
-          );
-          onSearch("Brasil");
-        }
+        () => setCidade("Permissão negada")
       );
     } else {
       console.warn("Erro ao obter localização, usando padrão (Brasil)");
-      onSearch("Brasil");
+      onSearch("Brasil", false);
     }
   }, []);
 
@@ -94,7 +85,7 @@ function App() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  onSearch(value.trim());
+                  onSearch(value.trim(), true);
                 }
               }}
             ></input>
@@ -127,7 +118,7 @@ function App() {
               .map((item) => (
                 <div
                   className="cursor-pointer hover:bg-cinza transition-all duration-100 ease-in-out"
-                  onClick={() => onSearch(item.nome)}
+                  onClick={() => onSearch(item.nome, true)}
                   id="dropdown-row"
                   key={item.nome}
                 >
@@ -138,7 +129,7 @@ function App() {
         </div>
       </header>
       <main className="flex flex-col gap-10 px-12 mt-5 lg:grid lg:grid-cols-[2fr_17rem] mx-auto pb-10">
-        <Clima data={climaData}></Clima>
+        <Clima data={climaData} nomeCidade={cidade}></Clima>
         <Previsao data={climaData}></Previsao>
       </main>
     </div>
