@@ -8,7 +8,7 @@ import data from "./paises.json";
 function App() {
   const [value, setValue] = useState("");
   const [climaData, setClimaData] = useState(null);
-  const [cidade, setCidade] = useState("Carregando...");
+  const [_cidade, setCidade] = useState("Carregando...");
 
   const onChange = (event) => {
     setValue(event.target.value);
@@ -129,7 +129,7 @@ function App() {
         </div>
       </header>
       <main className="flex flex-col gap-10 px-12 mt-5 lg:grid lg:grid-cols-[2fr_17rem] mx-auto pb-10">
-        <Clima data={climaData} nomeCidade={cidade}></Clima>
+        <Clima data={climaData}></Clima>
         <Previsao data={climaData}></Previsao>
       </main>
     </div>

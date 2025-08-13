@@ -2,7 +2,7 @@ import React from "react";
 import ClimaIcon from "./ClimaIcon";
 import PrevisaoHoje from "./PrevisaoHoje";
 
-function Clima({ data, nomeCidade }) {
+function Clima({ data }) {
   if (!data) {
     return (
       <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
@@ -16,7 +16,7 @@ function Clima({ data, nomeCidade }) {
       <div className="bg-cinza2 h-fit w-full rounded-xl p-6 shadow-xl border border-gray-800">
         <div className="flex justify-between">
           <div>
-            <h1 className="text-white text-3xl font-bold">{nomeCidade}</h1>
+            <h1 className="text-white text-3xl font-bold">{data.cidade}</h1>
             <p className="col-start-1 text-gray-400 text-sm">{`${data.regiao}, ${data.pais}`}</p>
           </div>
           <ClimaIcon clima={data.clima} size={80}></ClimaIcon>
