@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const API_KEY = process.env.API_KEY;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -60,4 +61,4 @@ app.get("/api/clima", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
+app.listen(PORT, () => console.log("Servidor rodando na porta 3000"));

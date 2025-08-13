@@ -4,6 +4,7 @@ import Clima from "./components/Clima";
 import Previsao from "./components/Previsao";
 import PrevisaoHoje from "./components/PrevisaoHoje";
 import data from "./paises.json";
+import "dotenv/config";
 
 function App() {
   const [value, setValue] = useState("");
