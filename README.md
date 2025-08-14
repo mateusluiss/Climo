@@ -25,4 +25,4 @@ https://climo-frontend.onrender.com/
 - [Express](https://expressjs.com/)
 - Integração com API externa de clima (ex.: [OpenWeather](https://openweathermap.org/))
 
-![Preview do Climo](https://imgur.com/a/NWr3hUv)
+![Preview do Climo](climo\frontend\src\assets\preview.png)
